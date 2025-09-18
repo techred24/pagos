@@ -10,20 +10,21 @@
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
+import { AgregarClienteScreen } from './views/agregarClienteView';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 type RootStackParamList = {
   Home: undefined;
   Details: undefined;
   AgregarCliente: undefined;
+  AgregarPrestamo: undefined;
 };
 
 type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
 
 function HomeScreen({ navigation }: { navigation: HomeScreenNavigationProp }) {
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', gap: 10 }}>
       <Pressable
             style={({ pressed }) => [
                 styles.button,
@@ -40,34 +41,41 @@ function HomeScreen({ navigation }: { navigation: HomeScreenNavigationProp }) {
             )}
       </Pressable>
       <Pressable
-        style={( pressed ) => [
-            styles.button,
-            {
-                backgroundColor: pressed ? '#5856D6' : 'skyblue',
-            },
-        ]}
-        onPress={() => navigation.navigate('Details')}
-      >
-        {({ pressed }) => (
-          <Text style={{ color: pressed ? '#FFF' : "#000"}}>
-            Agregar Prestamo
-          </Text>
-        )}
+            style={({ pressed }) => [
+                styles.button,
+                {
+                    backgroundColor: pressed ? '#5856D6' : 'skyblue',
+                },
+            ]}
+            onPress={() => {navigation.navigate('AgregarPrestamo');}}
+            onLongPress={() => {}}>
+            {({ pressed }) => (
+              <Text style={{ color: pressed ? '#FFF' : '#000' }}>
+                Agregar Prestamo
+              </Text>
+            )}
       </Pressable>
     </View>
   );
 }
-function DetailsScreen() {
+// function DetailsScreen() {
+//   return (
+//     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+//       <Text>Pantalla de Detalles</Text>
+//     </View>
+//   );
+// }
+// function AgregarClienteScreen() {
+//   return (
+//     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+//       <Text>Pantalla para agregar clientes</Text>
+//     </View>
+//   )
+// }
+function AgregarPrestamoScreen() {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Pantalla de Detalles</Text>
-    </View>
-  );
-}
-function AgregarClienteScreen() {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Pantalla para agregar clientes</Text>
+      <Text>Pantalla para agregar prestamos</Text>
     </View>
   )
 }
@@ -77,8 +85,9 @@ function App() {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Home">
         <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Details" component={DetailsScreen} />
+        {/* <Stack.Screen name="Details" component={DetailsScreen} /> */}
         <Stack.Screen name="AgregarCliente" component={AgregarClienteScreen} />
+        <Stack.Screen name="AgregarPrestamo" component={AgregarPrestamoScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
