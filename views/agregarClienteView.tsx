@@ -1,13 +1,3 @@
-// import { View, Text } from 'react-native';
-
-// export function AgregarClienteScreen() {
-//     return (
-//       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-//         <Text>Pantalla para agregar cliente</Text>
-//       </View>
-//     )
-//   }
-
 import React, { useState } from 'react';
 import { 
     View, 
@@ -20,65 +10,33 @@ import {
     ScrollView // Para asegurar que el formulario sea accesible en pantallas pequeñas
 } from 'react-native';
 
-import Icon from 'react-native-vector-icons/Feather';
+// import Icon from 'react-native-vector-icons/Feather';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { saveNewCliente } from '../src/database';
 
-export function AgregarClienteScreen() {
+type RootStackParamList = {
+    Home: undefined;
+    Details: undefined;
+    AgregarCliente: undefined;
+    AgregarPrestamo: undefined;
+}
 
-    const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
+type AgregarClienteProps = NativeStackScreenProps<RootStackParamList, 'AgregarCliente'>
+export function AgregarClienteScreen({ navigation } : AgregarClienteProps) {
 
-    // Estado para controlar la visibilidad de las contraseñas
-    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-    const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
-
-    // --- LÓGICA DE VALIDACIÓN ---
-    // Las funciones de validación se adaptan fácilmente.
-    const isValidUsername = () => {
-        const enMinusculas = username === username.toLocaleLowerCase();
-        const tieneAlMenosTresCaracteres = username.length >= 3;
-        const sinEspacios = !/\s/.test(username);
-        const sinCaracteresEspeciales = /^[a-z0-9_-]+$/.test(username);
-        return enMinusculas && tieneAlMenosTresCaracteres && sinEspacios && sinCaracteresEspeciales;
-    };
-
-    const isValidEmail = () => {
-        const regex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-        return regex.test(email);
-    };
-
+    const [username, setUsername] = useState<string>('');
+    const [address, setAddress] = useState<string>('');
+    const [phoneNumber, setPhoneNumber] = useState<string>('');
     // --- MANEJADOR DEL ENVÍO ---
     const handleRegistration = async () => {
-        if (!isValidUsername()) {
-            Alert.alert('Error', 'El nombre de usuario no es válido. Debe tener al menos 3 caracteres, sin espacios, sin mayúsculas y sin caracteres especiales (solo se permiten - y _).');
-            return;
-        }
-        if (!isValidEmail()) {
-            Alert.alert('Error', 'El correo electrónico no es válido.');
-            return;
-        }
-        if (password.length < 8) {
-            Alert.alert('Error', 'La contraseña debe tener al menos 8 caracteres.');
-            return;
-        }
-        if (password !== confirmPassword) {
-            Alert.alert('Error', 'Las contraseñas no coinciden.');
-            return;
-        }
-        
         // La lógica de encriptación y guardado se haría aquí.
-        // En lugar de IndexedDB, en React Native se usan soluciones como AsyncStorage o bases de datos como Realm o SQLite.
         try {
-            console.log('Datos del formulario válidos:', { username, email });
-            // Aquí iría la llamada a tu API o la lógica para guardar el usuario.
-            
             // Simula una navegación o muestra un mensaje de éxito
-            Alert.alert('Éxito', 'Usuario registrado correctamente.');
-
+            // Alert.alert(`username: ${username}, address: ${address}, phoneNumber: ${phoneNumber}`);
+            await saveNewCliente({ nombre: username });
+            navigation.replace('Home');
         } catch (error) {
-            Alert.alert('Error', 'Ocurrió un error al registrar el usuario.');
-            console.error('Ocurrió un error maniaco:', error);
+            Alert.alert('Error', 'Ocurrió un error al registrar al cliente.');
         }
     };
 
@@ -86,14 +44,14 @@ export function AgregarClienteScreen() {
         <SafeAreaView style={styles.safeArea}>
             <ScrollView contentContainerStyle={styles.container}>
                 <View style={styles.fieldset}>
-                    <Text style={styles.legend}>Registro</Text>
+                    <Text style={styles.legend}>Cliente</Text>
                     
-                    {/* Campo Usuario */}
+                    {/* Campo Nombre */}
                     <View style={styles.campo}>
-                        <Text style={styles.label}>Usuario:</Text>
+                        <Text style={styles.label}>Nombre:</Text>
                         <TextInput
                             style={styles.input}
-                            placeholder="Usuario"
+                            placeholder="Nombre"
                             placeholderTextColor="#999"
                             autoComplete="off"
                             autoCapitalize="none"
@@ -102,55 +60,31 @@ export function AgregarClienteScreen() {
                         />
                     </View>
 
-                    {/* Campo Correo */}
+                    {/* Campo Dirección */}
                     <View style={styles.campo}>
-                        <Text style={styles.label}>Correo:</Text>
+                        <Text style={styles.label}>Dirección (Opcional):</Text>
                         <TextInput
                             style={styles.input}
-                            placeholder="Correo"
+                            placeholder="Dirección"
                             placeholderTextColor="#999"
-                            keyboardType="email-address"
                             autoComplete="off"
                             autoCapitalize="none"
-                            value={email}
-                            onChangeText={setEmail}
+                            value={address}
+                            onChangeText={setAddress}
                         />
                     </View>
                     
-                    {/* Campo Contraseña */}
                     <View style={styles.campo}>
-                        <Text style={styles.label}>Contraseña:</Text>
-                        <View style={styles.passwordContainer}>
-                            <TextInput
-                                style={styles.inputPassword}
-                                placeholder="Contraseña"
-                                placeholderTextColor="#999"
-                                secureTextEntry={!isPasswordVisible} // Oculta el texto si es true
-                                value={password}
-                                onChangeText={setPassword}
-                            />
-                            <TouchableOpacity onPress={() => setIsPasswordVisible(!isPasswordVisible)}>
-                                <Icon name={isPasswordVisible ? 'eye' : 'eye-off'} size={20} color="#005485" />
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-
-                    {/* Campo Repetir Contraseña */}
-                    <View style={styles.campo}>
-                        <Text style={styles.label}>Repetir Contraseña:</Text>
-                        <View style={styles.passwordContainer}>
-                            <TextInput
-                                style={styles.inputPassword}
-                                placeholder="Contraseña"
-                                placeholderTextColor="#999"
-                                secureTextEntry={!isConfirmPasswordVisible}
-                                value={confirmPassword}
-                                onChangeText={setConfirmPassword}
-                            />
-                            <TouchableOpacity onPress={() => setIsConfirmPasswordVisible(!isConfirmPasswordVisible)}>
-                                <Icon name={isConfirmPasswordVisible ? 'eye' : 'eye-off'} size={20} color="#005485" />
-                            </TouchableOpacity>
-                        </View>
+                        <Text style={styles.label}>Teléfono (Opcional):</Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Teléfono"
+                            placeholderTextColor="#999"
+                            autoComplete="off"
+                            autoCapitalize="none"
+                            value={phoneNumber}
+                            onChangeText={setPhoneNumber}
+                        />
                     </View>
                     
                     {/* Botón de Registro */}

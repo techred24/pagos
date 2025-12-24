@@ -1,3 +1,10 @@
 {
-  "extends": "@react-native/typescript-config"
+  "extends": "@react-native/typescript-config",
+    "compilerOptions": {
+    // Necesario para que TypeScript sepa que usarás decoradores
+    "experimentalDecorators": true, 
+    // Necesario para que TypeScript sepa cómo emitir los metadatos de los decoradores
+    "emitDecoratorMetadata": true, 
+    // ... otras configuraciones
+  }
 }

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OpenPay Device Data</title>
+    <script>
+        var MERCHANT_ID = 'mllgxzskqkcwotzircll'; 
+        var PUBLIC_KEY = 'pk_5a0523f2603848b89d5f762696015694'; 
+        // Desactiva el modo Sandbox si estás en producción
+        var SANDBOX_MODE = true; 
+    </script>
+    <script src="https://js.openpay.mx/openpay-data.v1.min.js"></script>
+    <script>
+        // Inicializa OpenPay
+        OpenPay.setSandboxMode(SANDBOX_MODE);
+        OpenPay.setId(MERCHANT_ID);
+        OpenPay.setApiKey(PUBLIC_KEY);
+
+        // La función de configuración de OpenPay Data
+        OpenPay.deviceData.setup(function(deviceSessionId) {
+            // Cuando OpenPay tiene el ID, lo envía de regreso a React Native
+            window.ReactNativeWebView.postMessage(deviceSessionId);
+        });
+        
+        // Si hay un error y no se puede generar el ID (ej: falta conexión), enviamos un mensaje vacío o de error.
+        setTimeout(function() {
+            if (!deviceSessionId) {
+                window.ReactNativeWebView.postMessage('error_timeout');
+            }
+        }, 10000); // Timeout por seguridad
+    </script>
+</head>
+<body>
+    Generando Device Session ID...
+</body>
+</html>
