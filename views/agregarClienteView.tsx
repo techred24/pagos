@@ -109,8 +109,8 @@ const styles = StyleSheet.create({
         flexGrow: 1, // Permite que el ScrollView crezca
         alignItems: 'center',
         justifyContent: 'center',
-        paddingLeft: 450,
-        paddingRight: 450,
+        paddingLeft: 50,
+        paddingRight: 50,
     },
     fieldset: {
         width: '100%',

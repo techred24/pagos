@@ -84,8 +84,8 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        paddingLeft: 450,
-        paddingRight: 450
+        paddingLeft: 10,
+        paddingRight: 10
     },
     fieldset: {
         width: '100%',

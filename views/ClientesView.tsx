@@ -112,8 +112,8 @@ const styles = StyleSheet.create({
         flexGrow: 1, // Permite que el ScrollView crezca
         alignItems: 'center',
         justifyContent: 'center',
-        paddingLeft: 450,
-        paddingRight: 450,
+        paddingLeft: 5,
+        paddingRight: 5,
     },
     fieldset: {
         width: '100%',
@@ -143,14 +143,20 @@ const styles = StyleSheet.create({
     buttonContainer: {
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
+        flexWrap: 'wrap',
+        columnGap: 27,
+        rowGap: 10,
         // backgroundColor: 'navy',
+        width: '100%',
         marginBottom: 45
     },
     clientButton: {
         backgroundColor: 'skyblue',
         padding: 10,
-        borderRadius: 5
+        borderRadius: 5,
+        minWidth: '30%',
+        textAlign: 'center',
     },
     button: {
         width: '100%',

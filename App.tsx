@@ -16,8 +16,6 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { VerClienteScreen } from './views/VerClienteView';
 import { ClientesScreen } from './views/ClientesView';
 import { VerPrestamoScreen } from './views/VerPrestamosView';
-import { TarjetaScreen } from './views/TarjetaView';
-
 type RootStackParamList = {
   Home: undefined;
   Details: undefined;
@@ -28,7 +26,6 @@ type RootStackParamList = {
     id: string;
   };
   Clientes: undefined;
-  Tarjeta: undefined;
 };
 
 type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>;
@@ -111,21 +108,6 @@ function HomeScreen({ navigation }: { navigation: HomeScreenNavigationProp }) {
               </Text>
             )}
       </Pressable>
-      <Pressable
-            style={({ pressed }) => [
-                styles.button,
-                {
-                    backgroundColor: pressed ? '#5856D6' : 'skyblue',
-                },
-            ]}
-            onPress={() => {navigation.navigate('Tarjeta');}}
-            >
-            {({ pressed }) => (
-              <Text style={getButtonTextStyle({ pressed })}>
-                Tokenizar la tarjeta
-              </Text>
-            )}
-      </Pressable>
     </View>
   );
 }
@@ -142,7 +124,6 @@ function App() {
         <Stack.Screen name='VerPrestamos' component={VerPrestamoScreen} />
         <Stack.Screen name="VerCliente" component={VerClienteScreen} />
         <Stack.Screen name='Clientes' component={ClientesScreen} />
-        <Stack.Screen name='Tarjeta' component={TarjetaScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
